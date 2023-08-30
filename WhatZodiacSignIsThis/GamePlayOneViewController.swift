@@ -25,9 +25,17 @@ class GamePlayOneViewController: UIViewController {
     // Creating var of AVAudioPlayer type so we can use its features
     // AVAudioPlay is a dtat type from the AVFoundation
     
- 
+    var streaks = [String]()
+    var currentHotStreak = 0
+    var newHotStreak = 0
+    
+    // To Capture all hot streaks and display them in table view
+    var hotStreaksCountTableViewArray = [Int]()
+    
+    var filteredHotStreaksCountTableViewArray = [Int]()
     
     @IBOutlet weak var scoreLabel: UILabel!
+    
     
     
     var answerButtonNames = ["AquariusButton", "AriesButton", "CancerButton", "CapricornButton", "GeminiButton", "LeoButton", "LibraButton", "PiscesButton", "SagittariusButton", "ScorpioButton", "TaurusButton", "VirgoButton"]
@@ -221,6 +229,9 @@ class GamePlayOneViewController: UIViewController {
         // IF USER WINS
         if usersSelectedAnswer == correctSignKeyFromJokesArray {
             
+            // Append every win to streaks
+            streaks.append("Win")
+            
             //DispatchQueue.main.async {
                 let correctAnswerSoundArray = ["CorrectAnswer1", "CorrectAnswer2", "CorrectAnswer3", "CorrectAnswer4", "CorrectAnswer5"]
                 
@@ -277,6 +288,9 @@ class GamePlayOneViewController: UIViewController {
         // IF USER LOOSES
         } else {
             
+            // Append every win to streaks
+            streaks.append("Lose")
+            
             let wrongAnswerSoundArray = ["WrongAnswer1", "WrongAnswer2", "WrongAnswer3", "WrongAnswer4"]
             
             let randomWrongAnswerSound = wrongAnswerSoundArray.randomElement()!
@@ -327,6 +341,7 @@ class GamePlayOneViewController: UIViewController {
         playSound(soundName: "WaitingForAnswerSound", shouldLoop: true)
         getRandomJoke()
         getAnswers()
+        getHotStreaks(streak: streaks)
         gameOver(score: scoreLabel.text!)
         
     }
@@ -437,6 +452,49 @@ class GamePlayOneViewController: UIViewController {
         }
     }
     
+    func getHotStreaks(streak: [String]){
+        
+        if !streak.contains("Lose") {
+            
+            newHotStreak = streak.count
+            
+            
+            if newHotStreak > 1 {
+                
+                currentHotStreak = newHotStreak
+                
+            }
+            
+        } else {
+            
+            if currentHotStreak > 1 {
+                
+                hotStreaksCountTableViewArray.append(currentHotStreak)
+                
+            }
+            
+            // Empty the count container
+            streaks = []
+            // Set current streaks back to 0 again
+            currentHotStreak = 0
+           
+        }
+        
+        
+       
+        
+    }
 
+    @IBAction func fireButtonPressed(_ sender: UIButton) {
+        
+        // When btn pressed we will go to the HotStreaksViewController
+            let hotStreaksVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HotStreaksViewController") as! HotStreaksViewController
+        hotStreaksVC.hotStreaksCountTableViewArray = hotStreaksCountTableViewArray
+            self.present(hotStreaksVC, animated: true, completion: nil)
+        
+    }
+    
+    
+    
     
 }

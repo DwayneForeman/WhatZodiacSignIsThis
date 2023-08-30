@@ -5,7 +5,16 @@
       location = "group:WhatZodiacSignIsThis.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:">
+   </FileRef>
+   <FileRef
+      location = "group:">
+   </FileRef>
+   <FileRef
       location = "group:Info.plist">
+   </FileRef>
+   <FileRef
+      location = "group:Pods">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

@@ -16,7 +16,7 @@
 		1F032DDD2A91227D00D620B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F032DDC2A91227D00D620B1 /* Assets.xcassets */; };
 		1F032DE02A91227D00D620B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F032DDE2A91227D00D620B1 /* LaunchScreen.storyboard */; };
 		1F78FD1F2A9B33A200CBCDC2 /* CorrectAnswer5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1F78FD1E2A9B33A200CBCDC2 /* CorrectAnswer5.mp3 */; };
-		1F78FD212A9BDCFA00CBCDC2 /* WinStreakViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F78FD202A9BDCFA00CBCDC2 /* WinStreakViewController.swift */; };
+		1F9697C42A9C2FC4002CFF7B /* HotStreaksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9697C32A9C2FC4002CFF7B /* HotStreaksViewController.swift */; };
 		1FDEC4B52A9990DB00B04808 /* WaitingForAnswerSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1FDEC4B42A9990DA00B04808 /* WaitingForAnswerSound.mp3 */; };
 		1FDEC4BB2A99C11800B04808 /* CorrectAnswer3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1FDEC4B62A99C11800B04808 /* CorrectAnswer3.mp3 */; };
 		1FDEC4BC2A99C11800B04808 /* CorrectAnswer2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1FDEC4B72A99C11800B04808 /* CorrectAnswer2.mp3 */; };
@@ -40,7 +40,7 @@
 		1F032DDC2A91227D00D620B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F032DDF2A91227D00D620B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F78FD1E2A9B33A200CBCDC2 /* CorrectAnswer5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = CorrectAnswer5.mp3; sourceTree = "<group>"; };
-		1F78FD202A9BDCFA00CBCDC2 /* WinStreakViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinStreakViewController.swift; sourceTree = "<group>"; };
+		1F9697C32A9C2FC4002CFF7B /* HotStreaksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotStreaksViewController.swift; sourceTree = "<group>"; };
 		1FDEC4B42A9990DA00B04808 /* WaitingForAnswerSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = WaitingForAnswerSound.mp3; sourceTree = "<group>"; };
 		1FDEC4B62A99C11800B04808 /* CorrectAnswer3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = CorrectAnswer3.mp3; sourceTree = "<group>"; };
 		1FDEC4B72A99C11800B04808 /* CorrectAnswer2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = CorrectAnswer2.mp3; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 				1F032DD42A91227B00D620B1 /* GamePlayOneViewController.swift */,
 				1F032DD92A91227B00D620B1 /* WhatZodiacSignIsThis.xcdatamodeld */,
 				1FDEC4C82A9AC84B00B04808 /* StartGameViewController.swift */,
-				1F78FD202A9BDCFA00CBCDC2 /* WinStreakViewController.swift */,
+				1F9697C32A9C2FC4002CFF7B /* HotStreaksViewController.swift */,
 			);
 			path = WhatZodiacSignIsThis;
 			sourceTree = "<group>";
@@ -274,11 +274,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F032DDB2A91227B00D620B1 /* WhatZodiacSignIsThis.xcdatamodeld in Sources */,
+				1F9697C42A9C2FC4002CFF7B /* HotStreaksViewController.swift in Sources */,
 				1F032DD52A91227B00D620B1 /* GamePlayOneViewController.swift in Sources */,
 				1F032DD12A91227B00D620B1 /* AppDelegate.swift in Sources */,
 				1FDEC4C92A9AC84B00B04808 /* StartGameViewController.swift in Sources */,
 				1F032DD32A91227B00D620B1 /* SceneDelegate.swift in Sources */,
-				1F78FD212A9BDCFA00CBCDC2 /* WinStreakViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
