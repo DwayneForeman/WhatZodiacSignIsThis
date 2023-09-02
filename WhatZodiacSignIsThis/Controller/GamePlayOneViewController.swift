@@ -8,8 +8,11 @@
 import UIKit
 import SAConfettiView
 import AVFoundation
+import CoreData
 
 class GamePlayOneViewController: UIViewController {
+    
+    static let shared = GamePlayOneViewController()
     
     @IBOutlet weak var jokesLabel: UILabel!
     
@@ -21,22 +24,24 @@ class GamePlayOneViewController: UIViewController {
     
     var correctAnswer: String = ""
     
-    var player: AVAudioPlayer!
     // Creating var of AVAudioPlayer type so we can use its features
-    // AVAudioPlay is a dtat type from the AVFoundation
+    // AVAudioPlay is a data type from the AVFoundation
+    var player: AVAudioPlayer!
     
     var streaks = [String]()
+    
     var currentHotStreak = 0
+    
+    var currentHotStreakHelper = 0
+    
     var newHotStreak = 0
     
     // To Capture all hot streaks and display them in table view
     var hotStreaksCountTableViewArray = [Int]()
     
-    var filteredHotStreaksCountTableViewArray = [Int]()
-    
     @IBOutlet weak var scoreLabel: UILabel!
     
-    
+    var scoreLabelInt = 100
     
     var answerButtonNames = ["AquariusButton", "AriesButton", "CancerButton", "CapricornButton", "GeminiButton", "LeoButton", "LibraButton", "PiscesButton", "SagittariusButton", "ScorpioButton", "TaurusButton", "VirgoButton"]
     
@@ -44,107 +49,35 @@ class GamePlayOneViewController: UIViewController {
     
     
     
-    let jokesArray: [String: [String]] = [
-        "AriesButton": [
-            "I don't wait for elevators; I take the stairs. Who has time to stand around?",
-            "New restaurant? I'm there! I live for taste adventures.",
-            "Sports? I don't just watch; I compete with the players from my couch!",
-            "Personal trainer? Nah, I'm the life coach of my own journey!",
-            "A rock band? Count me in! I've got enough energy to light up a stadium!"
-        ],
-        "TaurusButton": [
-            "Buffet? That's where I set up camp, sampling all the delights.",
-            "Puzzle? I won't quit until every piece finds its place!",
-            "Movie night? Classic films, cozy blankets, and my comfort zone intact.",
-            "Gardening? I'm in. The patience for growth runs in my roots.",
-            "Umbrella? Always ready. I'm the dependable one in every storm."
-        ],
-        "GeminiButton": [
-            "Texting? I could have a full conversation before you finish your sentence!",
-            "Music? I've got playlists for every mood and scenario.",
-            "Indecisiveness? I've mastered the art of keeping options open.",
-            "Two-faced? Nah, I'm just well-equipped for different situations.",
-            "Socializing? I thrive in crowds and can charm anyone within seconds."
-        ],
-        "CancerButton": [
-            "Home is where the heart is, and my heart is always in my cozy sanctuary.",
-            "Sentimental? My keepsake box is a treasure trove of memories.",
-            "Intuition? I trust my gut feelings more than anything else.",
-            "Family time? My calendar is blocked for quality bonding moments.",
-            "Empathy? I've got a radar for everyone's emotions, even the cat's."
-        ],
-        "LeoButton": [
-            "Spotlight? Just follow the crowd's applause; I'm the center of attention.",
-            "Drama? Life is my stage, and I'm the star of every scene.",
-            "Generosity? I give, and people can't help but love me for it.",
-            "Confidence? I'm not just self-assured; I'm practically radiating it.",
-            "Roar? It's not just a sound; it's my majestic presence announcing itself."
-        ],
-        "VirgoButton": [
-            "Did you see that organized closet? Yep, that's my masterpiece.",
-            "Perfectionism? I'm not obsessed; I just want everything flawless.",
-            "Routine? My schedule is a work of art, down to the minute.",
-            "Detail-oriented? I spot what others miss; it's a gift and a curse.",
-            "Analyzing? I can dissect a situation until every angle is explored."
-        ],
-        "LibraButton": [
-            "Decision-making? Let's consult a committee before I choose.",
-            "Balance? It's not just a yoga pose; it's my life philosophy.",
-            "Harmony? I'm like a mediator superhero, always restoring peace.",
-            "Social gatherings? I orchestrate events like a seasoned conductor.",
-            "Flirting? I'm not just charming; I've mastered the art of attraction."
-        ],
-        "ScorpioButton": [
-            "Secrets? They're safe with me. I'm like a vault of mysteries.",
-            "Intense? My emotions run deep, and I don't hold back.",
-            "Detective skills? I can uncover the truth even in the shadows.",
-            "Passion? It's not just a word; it's the fire that fuels my every move.",
-            "Transformation? I embrace change like a phoenix rising from ashes."
-        ],
-        "SagittariusButton": [
-            "Wanderlust? You bet! My passport is always ready for an adventure.",
-            "Philosophy? I ponder life's big questions while others are still waking up.",
-            "Optimism? I'm not just hopeful; I see the silver lining everywhere.",
-            "Adventure? My bucket list is as long as my tales of epic journeys.",
-            "Freedom? I can't be caged; I'm the free spirit of the zodiac."
-        ],
-        "CapricornButton": [
-            "Goal-setting? I don't just climb; I conquer mountains.",
-            "Ambition? My dreams have a GPS, and I'm heading straight there.",
-            "Workaholic? It's not just a job; it's my legacy in the making.",
-            "Responsibility? I'm the reliable one people turn to in any crisis.",
-            "Discipline? I'm not just organized; I'm a master of self-control."
-        ],
-        "AquariusButton": [
-            "Rules? I'd rather invent new ones and see where they take us.",
-            "Innovation? I'm not just creative; I'm a visionary thinker.",
-            "Humanitarian? I can't help but fight for a better world.",
-            "Rebellion? It's not just a phase; it's my lifelong outlook.",
-            "Individuality? I march to my own beat, and the parade follows."
-        ],
-        "PiscesButton": [
-            "Dreams? I dive into them and swim in my imagination.",
-            "Intuition? I sense things others miss, like a psychic without the crystal ball.",
-            "Empathy? I feel for everyone, even fictional characters on TV.",
-            "Creativity? I'm not just artistic; my ideas come from cosmic inspiration.",
-            "Daydreaming? It's not a distraction; it's where my magic happens."
-        ]
-    ]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        // Hideing the navigation bar
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        // Capture, Filter and Assign to our components of this ViewController from CoreData fetch reults when teh view loads
+        captureAndFilterFetchResults()
+      
+        // Start new round
         newRound()
-
+        
+        // Grab file to run/see our SQL Lite datbase in action
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        
     }
     
     
-    // Fetch random joke from the jokes array
+  
+    
+    // Fetch random joke from the jokes array of Jokes singleton Model
     func getRandomJoke() {
         
         // Grab a randon Sign/Key from the jokes array
         // IF we can grab a random key THEN
-        if let randomSignKey = jokesArray.randomElement() {
+        if let randomSignKey = Jokes.shared.jokesArray.randomElement() {
             // Let's tap into the value of that random key. Value are teh arrays assicated with each key and then we grab a random one and grab a random joke. Aka let randomJoke
             
             // Capturing the random key so I can use in the getAnswers function below
@@ -157,7 +90,7 @@ class GamePlayOneViewController: UIViewController {
         
     }
     
-  
+    
     func getAnswers() {
         
         // OUR GOAL HERE:
@@ -169,7 +102,6 @@ class GamePlayOneViewController: UIViewController {
             button.backgroundColor = nil
             button.isEnabled = true
         }
-        
         
         
         var createAnswers: [String] = []
@@ -205,25 +137,18 @@ class GamePlayOneViewController: UIViewController {
                 button.accessibilityIdentifier = answerName
             }
         }
-    
-
+        
+        
     }
     
     
-    
-    
-
     @IBAction func highlightSelectedButton(_ sender: UIButton) {
         
-        var scoreLabelInt = Int(scoreLabel.text!)!
-        
-        
-            if let imageNameOfButton = sender.accessibilityIdentifier {
-                usersSelectedAnswer = imageNameOfButton
-                print("You selected \(usersSelectedAnswer)")
-                print("The correct answer is \(correctSignKeyFromJokesArray)")
-            }
-        
+        if let imageNameOfButton = sender.accessibilityIdentifier {
+            usersSelectedAnswer = imageNameOfButton
+            print("You selected \(usersSelectedAnswer)")
+            print("The correct answer is \(correctSignKeyFromJokesArray)")
+        }
         
         
         // IF USER WINS
@@ -232,14 +157,13 @@ class GamePlayOneViewController: UIViewController {
             // Append every win to streaks
             streaks.append("Win")
             
-            //DispatchQueue.main.async {
-                let correctAnswerSoundArray = ["CorrectAnswer1", "CorrectAnswer2", "CorrectAnswer3", "CorrectAnswer4", "CorrectAnswer5"]
-                
-                let randomCorrectAnswerSound = correctAnswerSoundArray.randomElement()!
+            let correctAnswerSoundArray = ["CorrectAnswer1", "CorrectAnswer2", "CorrectAnswer3", "CorrectAnswer4", "CorrectAnswer5"]
+            
+            let randomCorrectAnswerSound = correctAnswerSoundArray.randomElement()!
             print(randomCorrectAnswerSound)
             
-                self.playSound(soundName: randomCorrectAnswerSound, shouldLoop: false)
-            //}
+            self.playSound(soundName: randomCorrectAnswerSound, shouldLoop: false)
+            
             
             
             // Once we get the correct answer, disable all buttons so users cannot click on mutiple buttons within the same round
@@ -260,9 +184,6 @@ class GamePlayOneViewController: UIViewController {
             
             // Tap into the main Disoatch Queue and update UI
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                
-                
-                
                 // Stop confetti
                 confettiView.stopConfetti()
                 // Hide confetti
@@ -278,14 +199,13 @@ class GamePlayOneViewController: UIViewController {
             winPrompt.addAction(okayButton)
             present(winPrompt, animated: true)
             
+            
             scoreLabelInt += 10
             scoreLabel.text = String(scoreLabelInt)
-            
             print("Horray, you win!")
-    
             
             
-        // IF USER LOOSES
+            // IF USER LOOSES
         } else {
             
             // Append every win to streaks
@@ -295,16 +215,12 @@ class GamePlayOneViewController: UIViewController {
             
             let randomWrongAnswerSound = wrongAnswerSoundArray.randomElement()!
             
-            
-            
-            
             DispatchQueue.main.async {
                 self.playSound(soundName: randomWrongAnswerSound, shouldLoop: false)
                 let customeHighlightColor = UIColor(named: "OrangeHighlightGradient")
                 sender.backgroundColor = customeHighlightColor
                 sender.layer.cornerRadius = 18
             }
-            
             
             
             // Once we get the INcorrect answer, disable all buttons so users cannot click on mutiple buttons within the same round
@@ -319,8 +235,6 @@ class GamePlayOneViewController: UIViewController {
             }
             
             
-            
-            
             let losePrompt = UIAlertController(title: "Wrong! Step your game up", message: "", preferredStyle: .alert)
             let okay = UIAlertAction(title: "Okay", style: .default)
             losePrompt.addAction(okay)
@@ -328,7 +242,6 @@ class GamePlayOneViewController: UIViewController {
             
             scoreLabelInt -= 10
             scoreLabel.text = String(scoreLabelInt)
-            
             print("Wrong answer bud!!")
             
         }
@@ -341,6 +254,7 @@ class GamePlayOneViewController: UIViewController {
         playSound(soundName: "WaitingForAnswerSound", shouldLoop: true)
         getRandomJoke()
         getAnswers()
+        scoreLabelInt = Int(scoreLabel.text!)!
         getHotStreaks(streak: streaks)
         gameOver(score: scoreLabel.text!)
         
@@ -368,97 +282,101 @@ class GamePlayOneViewController: UIViewController {
                 self.player.numberOfLoops = -1
             }
         }
-      
+        
     }
     
     
     
     @IBAction func ballonPressed(_ sender: UIButton) {
         
-        var scoreLabelInt = Int(scoreLabel.text!)!
-
-            // BALLOON WILL REMOVE TWO INCORRECT ANSWERS TO HELP USER
-            // BALLOON COSTS 5 POINTS
-
-            // If the user has enough points (5 or more), then proceed
-            if scoreLabelInt >= 10 {
-                
-                // Play baloon pop sound
-                playSound(soundName: "PopSound", shouldLoop: false)
-                
-                // Remove 5 points
-                scoreLabelInt -= 10
-                
-                // Update score label via String
-                scoreLabel.text = String(scoreLabelInt)
-                
-                
-                // Count th number of incorrect answers to remove
-                var incorrectAnswersToRemove = 2
-
-                
-                // Loop throug the answerButtons and remove image for incorrect buttons
-                for button in answerButtons {
-                    if button.accessibilityIdentifier != correctSignKeyFromJokesArray {
-                        print("Removing image for button: \(button.accessibilityIdentifier ?? "Unknown")")
-                        // Setting the image to my "X.pdf" asset
-                        button.setImage(UIImage(named: "X.pdf"), for: .normal)
-                        
-                        // Settinh the accessibilityIdentifier
-                        button.accessibilityIdentifier = "X.pdf"
-                        
-                        // Now disabiling the 2 buttons associated with the X button so user cannot click on them
-                        if button.accessibilityIdentifier == "X.pdf" {
-                            button.isEnabled = false
-                        }
+        scoreLabelInt = Int(scoreLabel.text!)!
+        
+        // BALLOON WILL REMOVE TWO INCORRECT ANSWERS TO HELP USER
+        // BALLOON COSTS 5 POINTS
+        
+        // If the user has enough points (5 or more), then proceed
+        if scoreLabelInt >= 10 {
+            
+            
+            // Play baloon pop sound
+            playSound(soundName: "PopSound", shouldLoop: false)
+            
+            
+            // Remove 10 points
+            scoreLabelInt -= 10
+            
+            
+            // Update score label via String
+            scoreLabel.text = String(scoreLabelInt)
+            
+            
+            // Count th number of incorrect answers to remove
+            var incorrectAnswersToRemove = 2
+            
+            
+            // Loop throug the answerButtons and remove image for incorrect buttons
+            for button in answerButtons {
+                if button.accessibilityIdentifier != correctSignKeyFromJokesArray {
+                    print("Removing image for button: \(button.accessibilityIdentifier ?? "Unknown")")
+                    // Setting the image to my "X.pdf" asset
+                    button.setImage(UIImage(named: "X.pdf"), for: .normal)
                     
-                        print(button)
-                        
-                        // Decrement count of incorrectAnswersToRemove
-                        incorrectAnswersToRemove -= 1
-
-                        // If we have removed the required number of incorrect buttons, break out ofthe loop
-                        if incorrectAnswersToRemove == 0 {
-                            break
-                        }
+                    // Settinh the accessibilityIdentifier
+                    button.accessibilityIdentifier = "X.pdf"
+                    
+                    // Now disabiling the 2 buttons associated with the X button so user cannot click on them
+                    if button.accessibilityIdentifier == "X.pdf" {
+                        button.isEnabled = false
+                    }
+                    
+                    print(button)
+                    
+                    // Decrement count of incorrectAnswersToRemove
+                    incorrectAnswersToRemove -= 1
+                    
+                    // If we have removed the required number of incorrect buttons, break out ofthe loop
+                    if incorrectAnswersToRemove == 0 {
+                        break
                     }
                 }
-
-            
-            } else {
-                let notEnoughPointsAlert = UIAlertController(title: "Whoops! Not enough points", message: "The balloon button will remove two incorrect answers. You need at least 10 points to use this lifeline.", preferredStyle: .alert)
-                let okay = UIAlertAction(title: "Okay", style: .default)
-                notEnoughPointsAlert.addAction(okay)
-                present(notEnoughPointsAlert, animated: true)
             }
+            
+            
+        } else {
+            let notEnoughPointsAlert = UIAlertController(title: "Whoops! Not enough points", message: "The balloon button will remove two incorrect answers. You need at least 10 points to use this lifeline.", preferredStyle: .alert)
+            let okay = UIAlertAction(title: "Okay", style: .default)
+            notEnoughPointsAlert.addAction(okay)
+            present(notEnoughPointsAlert, animated: true)
         }
+    }
     
-
+    
     
     
     // Cretaing function to call when user reaches 0 points - we will pass in the scoreLabel
     func gameOver(score: String) {
         
-        if score == "0" {
+        if score <= "0" {
             
             DispatchQueue.main.async {
-                let gameOverAlert = UIAlertController(title: "GAME OVER", message: "Get em again nect time tiger!", preferredStyle: .alert)
+                let gameOverAlert = UIAlertController(title: "GAME OVER", message: "Get em again next time tiger!", preferredStyle: .alert)
                 let okay = UIAlertAction(title: "Okay", style: .default)
                 gameOverAlert.addAction(okay)
                 self.present(gameOverAlert, animated: true)
                 // set score back to 100
-                self.scoreLabel.text = "100"
+                self.scoreLabelInt = 100
+                self.scoreLabel.text = String(100)
             }
         }
     }
+    
     
     func getHotStreaks(streak: [String]){
         
         if !streak.contains("Lose") {
             
             newHotStreak = streak.count
-            
-            
+
             if newHotStreak > 1 {
                 
                 currentHotStreak = newHotStreak
@@ -469,32 +387,69 @@ class GamePlayOneViewController: UIViewController {
             
             if currentHotStreak > 1 {
                 
+                // Append to our array
                 hotStreaksCountTableViewArray.append(currentHotStreak)
                 
             }
             
             // Empty the count container
             streaks = []
+            
+            // transfer value of current hot streak so we can pass it into our coredata function before we clear currentHotStreaK
+            currentHotStreakHelper = currentHotStreak
+            
             // Set current streaks back to 0 again
             currentHotStreak = 0
-           
         }
-        
-        
-       
-        
     }
-
+    
     @IBAction func fireButtonPressed(_ sender: UIButton) {
         
         // When btn pressed we will go to the HotStreaksViewController
-            let hotStreaksVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HotStreaksViewController") as! HotStreaksViewController
+        let hotStreaksVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HotStreaksViewController") as! HotStreaksViewController
         hotStreaksVC.hotStreaksCountTableViewArray = hotStreaksCountTableViewArray
-            self.present(hotStreaksVC, animated: true, completion: nil)
-        
+        self.present(hotStreaksVC, animated: true, completion: nil)
     }
     
     
     
+    // Save before view dissapears
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        print(scoreLabelInt)
+        print(currentHotStreakHelper)
+        // Save score and streak to core data when we leave the screen
+        CoreDataManager.shared.addScoreAndStreak(score: scoreLabelInt, streak: currentHotStreakHelper)
+        
+    }
+    
+    
+    func captureAndFilterFetchResults() {
+        
+        // ---------- CAPTURE AND FILTER FECTH RESULTS CODE ----------------
+        
+        // Create fetchedScores object from our core data manager singleton fetchScores function
+        // Populate the arrays to show on screen - remeber the array is then passed to our HotStreaksViewcontroller with the TableView
+        let fetchedScores = CoreDataManager.shared.fetchScores()
+        // Filter (using closure) out streaks greater than 1 where $0 is the plcaeholder of each element and map/create a new array out streaks (using closure) then covert to integers since they are orginally Int64 as created in CoreData
+        hotStreaksCountTableViewArray = fetchedScores
+            .filter { $0.streaksNumber > 1 }
+            .map { Int($0.streaksNumber) }
+        
+        // Tap into our fetchedSocres and map out points then covert to integers since they are orginally Int64 as created in CoreData
+        let pointsNumbers = fetchedScores.map { Int($0.pointsNumber) }
+        print(pointsNumbers)
+        
+        // Grab the last point saved in our poimysNumbers array by using .last which us an optional so we unwrap using if let
+        if let lastPointsNumberInArray = pointsNumbers.last {
+            print(lastPointsNumberInArray)
+            // Equal out score labels text to be equal to the lastPointsNumberInArray aka pointsNumbers.last so it will appear upon load up as this function will be called in viewDidLoad
+            scoreLabel.text = String(lastPointsNumberInArray)
+            
+            // ---------- CAPTURE AND FILTER FECTH RESULTS CODE ----------------
+            
+        }
+    }
     
 }

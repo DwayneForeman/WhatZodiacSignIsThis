@@ -24,15 +24,17 @@ class HotStreaksViewController: UIViewController {
     
 }
 
+// How many cells will be displayed
 extension HotStreaksViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         hotStreaksCountTableViewArray.count
     }
     
+    // Where we will get the data to display
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StreakCell", for: indexPath)
         
-        
+        // Spicing things up and assigning a random text label to each cell returned
         let textLabels = [
             "You got \(String(hotStreaksCountTableViewArray[indexPath.row])) correct answers in a row",
             "\(String(hotStreaksCountTableViewArray[indexPath.row])) in a row, you are really that guy!",
@@ -55,11 +57,8 @@ extension HotStreaksViewController: UITableViewDataSource {
         cell.textLabel?.textAlignment = .center
         cell.textLabel?.lineBreakMode = .byWordWrapping
         
-        // Retuen the cell
+        // Return the cell
         return cell
     }
-    
-    
-    
     
 }

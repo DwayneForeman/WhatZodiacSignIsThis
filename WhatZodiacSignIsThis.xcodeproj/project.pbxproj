@@ -26,8 +26,9 @@
 		1FDEC4C52A99C12500B04808 /* WrongAnswer2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1FDEC4C12A99C12500B04808 /* WrongAnswer2.mp3 */; };
 		1FDEC4C62A99C12500B04808 /* WrongAnswer3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1FDEC4C22A99C12500B04808 /* WrongAnswer3.mp3 */; };
 		1FDEC4C72A99C12500B04808 /* WrongAnswer4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1FDEC4C32A99C12500B04808 /* WrongAnswer4.mp3 */; };
-		1FDEC4C92A9AC84B00B04808 /* StartGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDEC4C82A9AC84B00B04808 /* StartGameViewController.swift */; };
 		1FDEC4CB2A9AC9C200B04808 /* PopSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1FDEC4CA2A9AC9C200B04808 /* PopSound.mp3 */; };
+		1FED41F72AA02E7E00E64CE1 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED41F62AA02E7E00E64CE1 /* CoreDataManager.swift */; };
+		1FED41F92AA1651400E64CE1 /* Jokes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED41F82AA1651400E64CE1 /* Jokes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,8 +51,9 @@
 		1FDEC4C12A99C12500B04808 /* WrongAnswer2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = WrongAnswer2.mp3; sourceTree = "<group>"; };
 		1FDEC4C22A99C12500B04808 /* WrongAnswer3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = WrongAnswer3.mp3; sourceTree = "<group>"; };
 		1FDEC4C32A99C12500B04808 /* WrongAnswer4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = WrongAnswer4.mp3; sourceTree = "<group>"; };
-		1FDEC4C82A9AC84B00B04808 /* StartGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameViewController.swift; sourceTree = "<group>"; };
 		1FDEC4CA2A9AC9C200B04808 /* PopSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = PopSound.mp3; sourceTree = "<group>"; };
+		1FED41F62AA02E7E00E64CE1 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		1FED41F82AA1651400E64CE1 /* Jokes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Jokes.swift; sourceTree = "<group>"; };
 		413E6835D42C40117BF4BE04 /* Pods-WhatZodiacSignIsThis.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatZodiacSignIsThis.release.xcconfig"; path = "Target Support Files/Pods-WhatZodiacSignIsThis/Pods-WhatZodiacSignIsThis.release.xcconfig"; sourceTree = "<group>"; };
 		C98CE360276CB0DF3B948651 /* Pods_WhatZodiacSignIsThis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhatZodiacSignIsThis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69C130CEB443E7F81FD0084 /* Pods-WhatZodiacSignIsThis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatZodiacSignIsThis.debug.xcconfig"; path = "Target Support Files/Pods-WhatZodiacSignIsThis/Pods-WhatZodiacSignIsThis.debug.xcconfig"; sourceTree = "<group>"; };
@@ -72,10 +74,10 @@
 		1F032DC42A91227B00D620B1 = {
 			isa = PBXGroup;
 			children = (
+				1F032DCF2A91227B00D620B1 /* WhatZodiacSignIsThis */,
 				1F032DCE2A91227B00D620B1 /* Products */,
 				44386EA9AD9AB95E2061F88F /* Pods */,
 				92CC86E2C5954000E4C9614B /* Frameworks */,
-				1F032DCF2A91227B00D620B1 /* WhatZodiacSignIsThis */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,11 +92,11 @@
 		1F032DCF2A91227B00D620B1 /* WhatZodiacSignIsThis */ = {
 			isa = PBXGroup;
 			children = (
+				1FED41FA2AA2784B00E64CE1 /* Manager */,
+				1FED41F52A9FCD3900E64CE1 /* Model */,
+				1FED41F42A9FCCF500E64CE1 /* View */,
+				1FED41F32A9FCBD300E64CE1 /* Controller */,
 				1F78FD222A9BDD5C00CBCDC2 /* Supporting Files */,
-				1F032DD42A91227B00D620B1 /* GamePlayOneViewController.swift */,
-				1F032DD92A91227B00D620B1 /* WhatZodiacSignIsThis.xcdatamodeld */,
-				1FDEC4C82A9AC84B00B04808 /* StartGameViewController.swift */,
-				1F9697C32A9C2FC4002CFF7B /* HotStreaksViewController.swift */,
 			);
 			path = WhatZodiacSignIsThis;
 			sourceTree = "<group>";
@@ -104,7 +106,6 @@
 			children = (
 				1F032DD02A91227B00D620B1 /* AppDelegate.swift */,
 				1F032DD22A91227B00D620B1 /* SceneDelegate.swift */,
-				1F032DD62A91227B00D620B1 /* Main.storyboard */,
 				1F032DDC2A91227D00D620B1 /* Assets.xcassets */,
 				1F032DDE2A91227D00D620B1 /* LaunchScreen.storyboard */,
 				1FDEC4B32A9990BE00B04808 /* Sounds */,
@@ -128,6 +129,40 @@
 				1FDEC4CA2A9AC9C200B04808 /* PopSound.mp3 */,
 			);
 			path = Sounds;
+			sourceTree = "<group>";
+		};
+		1FED41F32A9FCBD300E64CE1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1F032DD42A91227B00D620B1 /* GamePlayOneViewController.swift */,
+				1F9697C32A9C2FC4002CFF7B /* HotStreaksViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1FED41F42A9FCCF500E64CE1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1F032DD62A91227B00D620B1 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1FED41F52A9FCD3900E64CE1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1F032DD92A91227B00D620B1 /* WhatZodiacSignIsThis.xcdatamodeld */,
+				1FED41F82AA1651400E64CE1 /* Jokes.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1FED41FA2AA2784B00E64CE1 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				1FED41F62AA02E7E00E64CE1 /* CoreDataManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		44386EA9AD9AB95E2061F88F /* Pods */ = {
@@ -275,9 +310,10 @@
 			files = (
 				1F032DDB2A91227B00D620B1 /* WhatZodiacSignIsThis.xcdatamodeld in Sources */,
 				1F9697C42A9C2FC4002CFF7B /* HotStreaksViewController.swift in Sources */,
+				1FED41F92AA1651400E64CE1 /* Jokes.swift in Sources */,
 				1F032DD52A91227B00D620B1 /* GamePlayOneViewController.swift in Sources */,
 				1F032DD12A91227B00D620B1 /* AppDelegate.swift in Sources */,
-				1FDEC4C92A9AC84B00B04808 /* StartGameViewController.swift in Sources */,
+				1FED41F72AA02E7E00E64CE1 /* CoreDataManager.swift in Sources */,
 				1F032DD32A91227B00D620B1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
